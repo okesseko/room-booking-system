@@ -25,7 +25,9 @@ import {
   ConfirmationDialog,
   Resources,
   GroupingPanel,
+  CurrentTimeIndicator,
 } from "@devexpress/dx-react-scheduler-material-ui";
+
 import moment from "moment";
 import { useEffect, useState } from "react";
 import MenuIcon from "@material-ui/icons/Menu";
@@ -47,7 +49,6 @@ const basic = [
     endDate: moment().add(2, "hours").toISOString(),
     id: 1,
     location: "Room 1",
-    rRule: "FREQ=DAILY;COUNT=10",
     members: [1, 2],
     roomId: 1,
   },
@@ -140,6 +141,12 @@ const Reservation = ({
       </Toolbar.Root>
     );
   };
+
+  const BooleanEditor = (props: any) => {
+    return (
+      <AppointmentForm.BooleanEditor {...props} style={{ display: "none" }} />
+    );
+  };
   const TimeTableCell = ({ onDoubleClick, ...restProps }: any) => {
     return <DayView.TimeTableCell onClick={onDoubleClick} {...restProps} />;
   };
@@ -166,7 +173,7 @@ const Reservation = ({
   }
   return (
     <Paper>
-      <Scheduler data={data} height={window.innerHeight} locale="zh-tw">
+      <Scheduler data={data} height={window.innerHeight}>
         <ViewState
           defaultCurrentDate={new Date()}
           currentDate={currenTime}
@@ -175,33 +182,30 @@ const Reservation = ({
           }}
         />
         <DayView cellDuration={60} timeTableCellComponent={TimeTableCell} />
-        {/* <WeekView cellDuration={60} />
-        <MonthView /> */}
+
         <Toolbar rootComponent={ToolbarCustom} />
-        {/* <DateNavigator /> */}
-        <AllDayPanel/>
         <EditingState
           onCommitChanges={commitChanges}
           onEditingAppointmentChange={(editingAppointment) =>
             setAdd(editingAppointment)
           }
-          // onAddedAppointmentChange={onAddedAppointmentChange}
         />
-        <EditRecurrenceMenu />
         <GroupingState grouping={grouping} />
 
         <Appointments />
-
+        {/* <CurrentTimeIndicator
+          shadePreviousCells={true}
+          shadePreviousAppointments={true}
+        /> */}
         <Resources data={resource} mainResourceName="roomId" />
         <IntegratedGrouping />
         <IntegratedEditing />
 
         <AppointmentTooltip showOpenButton showCloseButton />
-        <AppointmentForm />
+        <AppointmentForm booleanEditorComponent={BooleanEditor} />
         <GroupingPanel />
         <ConfirmationDialog />
         <TodayButton />
-        {/* <ViewSwitcher /> */}
       </Scheduler>
       {/* <Fab
         color="secondary"
