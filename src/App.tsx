@@ -7,6 +7,7 @@ import { Theme } from "@material-ui/core/styles/createMuiTheme";
 import LoginPage from "./component/login";
 import Navbar from "./component/navbar";
 import Home from "./component/home";
+import PersonalPage from "./component/personal";
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     "@global": {
@@ -70,6 +71,16 @@ const App = () => {
             render={() =>
               sessionStorage.getItem("token") ? (
                 <Home />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+           <Route
+            path="/personal"
+            render={() =>
+              sessionStorage.getItem("token") ? (
+                <PersonalPage />
               ) : (
                 <Redirect to="/login" />
               )
