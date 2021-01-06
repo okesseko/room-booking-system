@@ -112,7 +112,9 @@ const DrawBar = ({
           {
             fieldName: "roomId",
             title: "Room Name",
-            instances: buffer[0].instances.filter((e: any) => e.id !== id),
+            instances: buffer[0].instances.filter((e: any) => e.id !== id).length
+              ? buffer[0].instances.filter((e: any) => e.id !== id)
+              : [{ text: "Room", id: 7, color: blue }],
           },
           {
             fieldName: "members",
@@ -128,7 +130,7 @@ const DrawBar = ({
             title: "Room Name",
             instances: [...buffer[0].instances, instance[--id]].sort(
               (a, b) => a.id - b.id
-            ),
+            ).filter((e: any) => e.id !== 7),
           },
           {
             fieldName: "members",
