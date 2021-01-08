@@ -3,8 +3,9 @@ import { Grid, makeStyles } from "@material-ui/core";
 import Reservation from "./reservation";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import moment from "moment";
+import Axios from "axios";
 import DrawBar from "./drawBar";
 import {
   blue,
@@ -61,7 +62,59 @@ const Home = () => {
   const [selectedDate, setSelectedDate] = useState(moment());
   const [resource, setResource] = useState(resources);
   const [openDrawer, setopenDrawer] = useState(true);
+  const [token, setToken] = useState("");
   const classes = useStyles();
+  //取得token
+  useEffect(() => {
+    const code = new URL(window.location.href).searchParams.get("code");
+    console.log("code", code);
+    if (code) {
+      console.log("hi");
+      Axios({
+        method: "POST",
+        url: "https://ntust.yhchen.space/api/oauth",
+        data: {
+          code: code,
+        },
+      })
+        .then((res) => {
+          console.log(res.data, "qwe");
+          setToken(res.data.token);
+          localStorage.setItem("token", res.data.token);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      console.log("re");
+      localStorage.removeItem("token");
+      window.location.reload();
+    }
+    Axios({
+      method: "GET",
+      url: "https://ntust.yhchen.space/api/user",
+    })
+      .then((res) => {
+        console.log(res.data, "mem");
+        setResource([
+          resource[0],
+          {
+            fieldName: "members",
+            title: "Members",
+            instances: res.data.map((data: any) => {
+              return {
+                id: data.userId,
+                text: data.userName,
+              };
+            }),
+            allowMultiple: true,
+          },
+        ]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   return (
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <Grid container>
@@ -81,6 +134,7 @@ const Home = () => {
           className={classes.calenderCustom}
         >
           <Reservation
+            token={token}
             currenTime={selectedDate}
             setCurrenTime={setSelectedDate}
             resource={resource}

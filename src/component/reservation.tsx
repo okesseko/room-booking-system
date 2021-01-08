@@ -34,87 +34,61 @@ import MenuIcon from "@material-ui/icons/Menu";
 import { Button, Fab, IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import axios from "axios";
+import { AmdDependency } from "typescript";
 interface propType {
   currenTime: any;
   setCurrenTime: any;
   resource: any;
   open: boolean;
+  token: string;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
-
-const basic = [
-  {
-    title: "Website Re-Design Plan",
-    startDate: moment().subtract(2, "hours").toISOString(),
-    endDate: moment().add(2, "hours").toISOString(),
-    id: 1,
-    location: "Room 1",
-    members: [1, 2],
-    roomId: 1,
-  },
-  {
-    title: "Book Flights to San Fran for Sales Trip",
-    startDate: moment().subtract(10, "hours").toISOString(),
-    endDate: moment().subtract(1, "hours").toISOString(),
-    id: 2,
-    location: "Room 2",
-    members: [1, 2],
-    roomId: 2,
-  },
-  {
-    title: "Book Flights to San Fran for Sales Trip",
-    startDate: moment().subtract(10, "hours").toISOString(),
-    endDate: moment().subtract(1, "hours").toISOString(),
-    id: 3,
-    location: "Room 3",
-    members: [1, 2],
-    roomId: 3,
-  },
-  {
-    title: "Book Flights to San Fran for Sales Trip",
-    startDate: moment().subtract(10, "hours").toISOString(),
-    endDate: moment().subtract(1, "hours").toISOString(),
-    id: 4,
-    location: "Room 4",
-    members: [1, 2],
-    roomId: 4,
-  },
-  {
-    title: "Book Flights to San Fran for Sales Trip",
-    startDate: moment().subtract(10, "hours").toISOString(),
-    endDate: moment().subtract(1, "hours").toISOString(),
-    id: 5,
-    location: "Room 5",
-    members: [1, 2],
-    roomId: 5,
-  },
-  {
-    title: "Book Flights to San Fran for Sales Trip",
-    startDate: moment().subtract(10, "hours").toISOString(),
-    endDate: moment().subtract(1, "hours").toISOString(),
-    id: 6,
-    location: "Room 6",
-    members: [1, 2],
-    roomId: 6,
-  },
-];
 
 const Reservation = ({
   currenTime,
   setCurrenTime,
   resource,
+  token,
   open,
   setOpen,
 }: propType) => {
   let history = useHistory();
-  const [data, setData] = useState(basic);
+  const [data, setData] = useState<any[]>([]);
+  const [reGet, setReGet] = useState(1);
   const [add, setAdd] = useState<any>();
+  useEffect(() => {
+    console.log(currenTime);
+    axios({
+      method: "GET",
+      url: ` https://ntust.yhchen.space/api/meeting`,
+      params: {
+        token: token,
+        day: moment(currenTime).format("yyyy-MM-DD"),
+      },
+    }).then((res) => {
+      console.log(res.data);
+      setData(
+        res.data.map((data: any) => {
+          return {
+            title: data.title,
+            startDate: moment(data.beginAt).toISOString(),
+            endDate: moment(data.finishAt).toISOString(),
+            notes: data.information,
+            location: data.roomId,
+            roomId: parseInt(data.roomId[4]),
+            members: data.users.map((usr: any) => usr.userId),
+          };
+        })
+      );
+      console.log(data, currenTime);
+    });
+  }, [token, currenTime]);
   const grouping = [
     {
       resourceName: "roomId",
     },
   ];
-  //元件改寫 增加改密碼button
   const ToolbarCustom = ({ children, style, ...restProps }: any) => {
     return (
       <Toolbar.Root
@@ -130,18 +104,9 @@ const Reservation = ({
           </IconButton>
         )}
         {children}
-        <IconButton
-          size="medium"
-          onClick={() => {
-            history.push("/personal");
-          }}
-        >
-          <AccountCircleIcon style={{ fontSize: "36px" }} />
-        </IconButton>
       </Toolbar.Root>
     );
   };
-
   const BooleanEditor = (props: any) => {
     return (
       <AppointmentForm.BooleanEditor {...props} style={{ display: "none" }} />
@@ -153,22 +118,84 @@ const Reservation = ({
   //根據新增刪除修改等動作進行回傳資料
   function commitChanges({ added, changed, deleted }: any) {
     console.log(added, changed, deleted, "iii");
-
     if (added) {
-      const startingAddedId =
-        data.length > 0 ? data[data.length - 1].id + 1 : 0;
-      setData([...data, { id: startingAddedId, ...added }]);
+      console.log(added, moment(added.startDate).local());
+      axios({
+        method: "POST",
+        url: ` https://ntust.yhchen.space/api/meeting`,
+        data: {
+          title: added.title,
+          startTime: moment(added.startDate).valueOf(),
+          endTime: moment(added.endDate).valueOf(),
+          moreInformation: added.notes,
+          roomId: `ROOM${added.roomId}`,
+          members: added.members,
+        },
+        params: {
+          token: token,
+        },
+      }).then((res) => {
+        console.log(res.data, "return", {
+          title: added.title,
+          startTime: moment(added.startDate).valueOf(),
+          endTime: moment(added.endDate).valueOf(),
+          moreInformation: added.notes,
+          roomId: `ROOM${added.roomId}`,
+          members: added.members,
+        });
+        setData([...data, { id: res.data.id, ...added }]);
+      });
     }
     if (changed) {
       setData(
-        data.map((appointment) =>
-          changed[appointment.id]
-            ? { ...appointment, ...changed[appointment.id] }
-            : appointment
-        )
+        data.map((appointment) => {
+          if (changed[appointment.id]) {
+            console.log(appointment, "app");
+            axios({
+              method: "PUT",
+              url: ` https://ntust.yhchen.space/api/meeting/${appointment.id}`,
+              data: {
+                title: changed[appointment.id].title
+                  ? changed[appointment.id].title
+                  : appointment.title,
+                startTime: changed[appointment.id].startDate
+                  ? moment(changed[appointment.id].startDate).valueOf()
+                  : moment(appointment.startDate).valueOf(),
+                endTime: changed[appointment.id].endDate
+                  ? moment(changed[appointment.id].endDate).valueOf()
+                  : moment(appointment.endDate).valueOf(),
+                moreInformation: changed[appointment.id].notes
+                  ? changed[appointment.id].notes
+                  : appointment.notes,
+                roomId: changed[appointment.id].roomId
+                  ? `ROOM${changed[appointment.id].roomId}`
+                  : `ROOM${appointment.roomId}`,
+                members: changed[appointment.id].members
+                  ? changed[appointment.id].members
+                  : appointment.members,
+              },
+
+              params: {
+                token: token,
+              },
+            })
+            return { ...appointment, ...changed[appointment.id] };
+          } else {
+            return appointment;
+          }
+        })
       );
     }
     if (deleted !== undefined) {
+      
+      axios({
+        method: "DELETE",
+        url: ` https://ntust.yhchen.space/api/meeting/${deleted}`,
+
+        params: {
+          token: token,
+        },
+      });
       setData(data.filter((appointment) => appointment.id !== deleted));
     }
   }

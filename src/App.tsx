@@ -47,7 +47,7 @@ const App = () => {
             exact
             path="/"
             render={() =>
-              sessionStorage.getItem("token") ? (
+              localStorage.getItem("token") ? (
                 <Home />
               ) : (
                 <Redirect to="/login" />
@@ -57,7 +57,7 @@ const App = () => {
            <Route
             path="/personal"
             render={() =>
-              sessionStorage.getItem("token") ? (
+              localStorage.getItem("token") ? (
                 <PersonalPage />
               ) : (
                 <Redirect to="/login" />
