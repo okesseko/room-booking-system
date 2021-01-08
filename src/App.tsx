@@ -43,9 +43,6 @@ const App = () => {
     <HashRouter>
       <ThemeProvider theme={theme}>
         <Paper  square className={classes.body}>
-          {/* {sessionStorage.getItem("token") && login && (
-            <Navbar Mode={darkMode} setMode={setDarkMode} />
-          )} */}
           <Route
             exact
             path="/"

@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import { Form, Formik, Field } from "formik";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { TextField } from "formik-material-ui";
 import { CircularProgress, Grid, Snackbar } from "@material-ui/core";
-import MuiAlert from "@material-ui/lab/Alert";
-import Alert from "@material-ui/lab/Alert";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 interface login {
   oldpassword: string;
@@ -37,8 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 const PersonalPage = () => {
   const classes = useStyles();
-  const [message, setMessage] = useState<string>("");
-  const [showMessage, setShowMessage] = useState<boolean>(false);
   return (
     <Container component="main" maxWidth="xs" className={classes.contain}>
       <div className={classes.paper}>
@@ -73,7 +68,6 @@ const PersonalPage = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              {message && <Alert severity="error">{message}</Alert>}
               <Field
                 component={TextField}
                 fullWidth

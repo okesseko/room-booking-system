@@ -2,7 +2,7 @@ import * as React from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import Reservation from "./reservation";
 import MomentUtils from "@date-io/moment";
-import { MuiPickersUtilsProvider, Calendar } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { useState } from "react";
 import moment from "moment";
 import DrawBar from "./drawBar";
@@ -25,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 100,
   },
 }));
+//基本設定
 const resources = [
   {
     fieldName: "roomId",

@@ -2,19 +2,16 @@ import * as React from "react";
 import {
   Button,
   Checkbox,
-  Divider,
-  Drawer,
   FormControl,
   FormControlLabel,
   FormGroup,
   FormLabel,
   Grid,
-  IconButton,
   makeStyles,
 } from "@material-ui/core";
 import MomentUtils from "@date-io/moment";
 import { MuiPickersUtilsProvider, Calendar } from "@material-ui/pickers";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import moment from "moment";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import {
@@ -24,8 +21,6 @@ import {
   orange,
   purple,
   red,
-  teal,
-  indigo,
 } from "@material-ui/core/colors";
 
 interface propType {
@@ -50,18 +45,6 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 0,
   },
 }));
-const person = [
-  {
-    text: "Me",
-    id: 1,
-    color: indigo,
-  },
-  {
-    text: "Arnie",
-    id: 2,
-    color: teal,
-  },
-];
 const instance = [
   {
     text: "Room1",
@@ -102,8 +85,8 @@ const DrawBar = ({
   open,
   setOpen,
 }: propType) => {
-  const [checked, setChecked] = useState([1, 2]);
   const classes = useStyles();
+  //根據checked按鈕決定顯示資料
   function setRoom(id: number, check: boolean) {
     if (id) {
       const buffer = [...resource].flat();
@@ -178,7 +161,7 @@ const DrawBar = ({
     });
     return buffer;
   }
-
+//只有打開的時候才渲染
   return open ? (
     <Grid
       id="smallCalendar"
@@ -206,137 +189,7 @@ const DrawBar = ({
             setTime(data);
           }}
         />
-        {/* <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">My meeting</FormLabel>
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checked.length === 2}
-                  indeterminate={checked.length > 0 && checked.length < 2}
-                  onChange={() => {
-                    if (checked.length !== 2)
-                      setResource([
-                        {
-                          fieldName: "roomId",
-                          title: "Room Name",
-                          instances: resource[0].instances,
-                        },
-                        {
-                          fieldName: "members",
-                          title: "Members",
-                          instances: [],
-                          allowMultiple: true,
-                        },
-                      ]);
-                    else
-                      setResource([
-                        {
-                          fieldName: "roomId",
-                          title: "Room Name",
-                          instances: resource[0].instances,
-                        },
-                        {
-                          fieldName: "members",
-                          title: "Members",
-                          instances: person,
-                          allowMultiple: true,
-                        },
-                      ]);
-                  }}
-                  name="all"
-                />
-              }
-              label="All"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checked.indexOf(1) !== -1}
-                  onChange={(e) => {
-                    if (!e.target.checked)
-                      setResource([
-                        {
-                          fieldName: "roomId",
-                          title: "Room Name",
-                          instances: resource[0].instances,
-                        },
-                        {
-                          fieldName: "members",
-                          title: "Members",
-                          instances: resource[0].instances.filter(
-                            (e: any) => e.id !== 1
-                          ),
-                          allowMultiple: true,
-                        },
-                      ]);
-                    else
-                      setResource([
-                        {
-                          fieldName: "roomId",
-                          title: "Room Name",
-                          instances: resource[0].instances,
-                        },
-                        {
-                          fieldName: "members",
-                          title: "Members",
-                          instances: [...resource[0].instances, person[0]].sort(
-                            (a, b) => a.id - b.id
-                          ),
-                          allowMultiple: true,
-                        },
-                      ]);
-                  }}
-                  name="myMeet"
-                />
-              }
-              label="My Meetting"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={checked.indexOf(2) !== -1}
-                  onChange={(e) => {
-                    if (!e.target.checked)
-                      setResource([
-                        {
-                          fieldName: "roomId",
-                          title: "Room Name",
-                          instances: resource[0].instances,
-                        },
-                        {
-                          fieldName: "members",
-                          title: "Members",
-                          instances: resource[0].instances.filter(
-                            (e: any) => e.id !== 2
-                          ),
-                          allowMultiple: true,
-                        },
-                      ]);
-                    else
-                      setResource([
-                        {
-                          fieldName: "roomId",
-                          title: "Room Name",
-                          instances: resource[0].instances,
-                        },
-                        {
-                          fieldName: "members",
-                          title: "Members",
-                          instances: [...resource[0].instances, person[1]].sort(
-                            (a, b) => a.id - b.id
-                          ),
-                          allowMultiple: true,
-                        },
-                      ]);
-                  }}
-                  name="otherMeet"
-                />
-              }
-              label="Other Meetting"
-            />
-          </FormGroup>
-        </FormControl> */}
+     
         <FormControl
           component="fieldset"
           className={classes.formControl}

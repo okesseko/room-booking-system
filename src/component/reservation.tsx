@@ -108,13 +108,13 @@ const Reservation = ({
 }: propType) => {
   let history = useHistory();
   const [data, setData] = useState(basic);
-  const [formVisible, setFormVisible] = useState(false);
   const [add, setAdd] = useState<any>();
   const grouping = [
     {
       resourceName: "roomId",
     },
   ];
+  //元件改寫 增加改密碼button
   const ToolbarCustom = ({ children, style, ...restProps }: any) => {
     return (
       <Toolbar.Root
@@ -150,6 +150,7 @@ const Reservation = ({
   const TimeTableCell = ({ onDoubleClick, ...restProps }: any) => {
     return <DayView.TimeTableCell onClick={onDoubleClick} {...restProps} />;
   };
+  //根據新增刪除修改等動作進行回傳資料
   function commitChanges({ added, changed, deleted }: any) {
     console.log(added, changed, deleted, "iii");
 
@@ -193,10 +194,6 @@ const Reservation = ({
         <GroupingState grouping={grouping} />
 
         <Appointments />
-        {/* <CurrentTimeIndicator
-          shadePreviousCells={true}
-          shadePreviousAppointments={true}
-        /> */}
         <Resources data={resource} mainResourceName="roomId" />
         <IntegratedGrouping />
         <IntegratedEditing />
@@ -207,20 +204,6 @@ const Reservation = ({
         <ConfirmationDialog />
         <TodayButton />
       </Scheduler>
-      {/* <Fab
-        color="secondary"
-        style={{ position: "absolute", right: "16px", bottom: "16px" }}
-        onClick={() => {
-          setFormVisible(true);
-          // setAdd(undefined);
-          // onAddedAppointmentChange({
-          //   startDate: moment(),
-          //   endDate: moment().add(1, "hour"),
-          // });
-        }}
-      >
-        <AddIcon />
-      </Fab> */}
     </Paper>
   );
 };
