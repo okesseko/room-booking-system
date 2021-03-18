@@ -230,7 +230,7 @@ const Reservation = ({
         <IntegratedGrouping />
         <IntegratedEditing />
 
-        <AppointmentTooltip showOpenButton showCloseButton />
+        <AppointmentTooltip showOpenButton showCloseButton  />
         <AppointmentForm booleanEditorComponent={BooleanEditor} />
         <GroupingPanel />
         <ConfirmationDialog />

@@ -1,70 +1,65 @@
-# Getting Started with Create React App
+# React-calendar
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+# 專案說明：
 
-In the project directory, you can run:
+---
 
-### `yarn start`
+本專是是房間預約系統，可以搭配後端server顯示目前哪些room被預約並顯示在該使用者的google日曆，由於目前沒有對應的後端所以只能將資料暫存（刷新就消失）
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# 專案建置：
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
 
-### `yarn test`
+請先 install 本專案所需套件
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```jsx
+npm install
+```
 
-### `yarn build`
+請選擇一種方式開啟
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```jsx
+npm run start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```jsx
+yarn start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+預設會使用port 3000 如果該port已被使用會自動切換到合適的port
 
-### `yarn eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# 如何使用：
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![readmeImg/Untitled.png](readmeImg/Untitled.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+1. 收起側邊欄
+2. 選擇月份，會用藍圈標記當日
+3. 顯示哪些房間
+4. 回到今天
+5. 房間預約顯示
 
-## Learn More
+## 創建房間：
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+![readmeImg/Untitled%201.png](readmeImg/Untitled%201.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1.點擊需要預約的房間和時間
 
-### Code Splitting
+![readmeImg/Untitled%202.png](readmeImg/Untitled%202.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+2.填寫該次預約的訊息
 
-### Analyzing the Bundle Size
+![readmeImg/Untitled%203.png](readmeImg/Untitled%203.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+3.該次預約會顯示在畫面上
 
-### Making a Progressive Web App
+![readmeImg/Untitled%204.png](readmeImg/Untitled%204.png)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+4.可以點選該活動查看細節或是刪除修改
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+(由於目前沒有後端所以刪除無法使用）
