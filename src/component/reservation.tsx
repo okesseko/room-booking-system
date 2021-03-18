@@ -57,33 +57,34 @@ const Reservation = ({
   const [data, setData] = useState<any[]>([]);
   const [reGet, setReGet] = useState(1);
   const [add, setAdd] = useState<any>();
-  useEffect(() => {
-    console.log(currenTime);
-    axios({
-      method: "GET",
-      url: ` https://ntust.yhchen.space/api/meeting`,
-      params: {
-        token: token,
-        day: moment(currenTime).format("yyyy-MM-DD"),
-      },
-    }).then((res) => {
-      console.log(res.data);
-      setData(
-        res.data.map((data: any) => {
-          return {
-            title: data.title,
-            startDate: moment(data.beginAt).toISOString(),
-            endDate: moment(data.finishAt).toISOString(),
-            notes: data.information,
-            location: data.roomId,
-            roomId: parseInt(data.roomId[4]),
-            members: data.users.map((usr: any) => usr.userId),
-          };
-        })
-      );
-      console.log(data, currenTime);
-    });
-  }, [token, currenTime]);
+  //需有後端
+  // useEffect(() => {
+  //   console.log(currenTime);
+  //   axios({
+  //     method: "GET",
+  //     url: ` https://ntust.yhchen.space/api/meeting`,
+  //     params: {
+  //       token: token,
+  //       day: moment(currenTime).format("yyyy-MM-DD"),
+  //     },
+  //   }).then((res) => {
+  //     console.log(res.data);
+  //     setData(
+  //       res.data.map((data: any) => {
+  //         return {
+  //           title: data.title,
+  //           startDate: moment(data.beginAt).toISOString(),
+  //           endDate: moment(data.finishAt).toISOString(),
+  //           notes: data.information,
+  //           location: data.roomId,
+  //           roomId: parseInt(data.roomId[4]),
+  //           members: data.users.map((usr: any) => usr.userId),
+  //         };
+  //       })
+  //     );
+  //     console.log(data, currenTime);
+  //   });
+  // }, [token, currenTime]);
   const grouping = [
     {
       resourceName: "roomId",
@@ -119,66 +120,69 @@ const Reservation = ({
   function commitChanges({ added, changed, deleted }: any) {
     console.log(added, changed, deleted, "iii");
     if (added) {
-      console.log(added, moment(added.startDate).local());
-      axios({
-        method: "POST",
-        url: ` https://ntust.yhchen.space/api/meeting`,
-        data: {
-          title: added.title,
-          startTime: moment(added.startDate).valueOf(),
-          endTime: moment(added.endDate).valueOf(),
-          moreInformation: added.notes,
-          roomId: `ROOM${added.roomId}`,
-          members: added.members,
-        },
-        params: {
-          token: token,
-        },
-      }).then((res) => {
-        console.log(res.data, "return", {
-          title: added.title,
-          startTime: moment(added.startDate).valueOf(),
-          endTime: moment(added.endDate).valueOf(),
-          moreInformation: added.notes,
-          roomId: `ROOM${added.roomId}`,
-          members: added.members,
-        });
-        setData([...data, { id: res.data.id, ...added }]);
-      });
+      //需要後端
+      // axios({
+      //   method: "POST",
+      //   url: ` https://ntust.yhchen.space/api/meeting`,
+      //   data: {
+      //     title: added.title,
+      //     startTime: moment(added.startDate).valueOf(),
+      //     endTime: moment(added.endDate).valueOf(),
+      //     moreInformation: added.notes,
+      //     roomId: `ROOM${added.roomId}`,
+      //     members: added.members,
+      //   },
+      //   params: {
+      //     token: token,
+      //   },
+      // }).then((res) => {
+      //   console.log(res.data, "return", {
+      //     title: added.title,
+      //     startTime: moment(added.startDate).valueOf(),
+      //     endTime: moment(added.endDate).valueOf(),
+      //     moreInformation: added.notes,
+      //     roomId: `ROOM${added.roomId}`,
+      //     members: added.members,
+      //   });
+      //   setData([...data, { id: res.data.id, ...added }]);
+      // });
+      setData([...data, { id: reGet, ...added }]);
+      setReGet(reGet+1)
     }
     if (changed) {
       setData(
         data.map((appointment) => {
           if (changed[appointment.id]) {
             console.log(appointment, "app");
-            axios({
-              method: "PUT",
-              url: ` https://ntust.yhchen.space/api/meeting/${appointment.id}`,
-              data: {
-                title: changed[appointment.id].title
-                  ? changed[appointment.id].title
-                  : appointment.title,
-                startTime: changed[appointment.id].startDate
-                  ? moment(changed[appointment.id].startDate).valueOf()
-                  : moment(appointment.startDate).valueOf(),
-                endTime: changed[appointment.id].endDate
-                  ? moment(changed[appointment.id].endDate).valueOf()
-                  : moment(appointment.endDate).valueOf(),
-                moreInformation: changed[appointment.id].notes
-                  ? changed[appointment.id].notes
-                  : appointment.notes,
-                roomId: changed[appointment.id].roomId
-                  ? `ROOM${changed[appointment.id].roomId}`
-                  : `ROOM${appointment.roomId}`,
-                members: changed[appointment.id].members
-                  ? changed[appointment.id].members
-                  : appointment.members,
-              },
+            //需要後端
+            // axios({
+            //   method: "PUT",
+            //   url: ` https://ntust.yhchen.space/api/meeting/${appointment.id}`,
+            //   data: {
+            //     title: changed[appointment.id].title
+            //       ? changed[appointment.id].title
+            //       : appointment.title,
+            //     startTime: changed[appointment.id].startDate
+            //       ? moment(changed[appointment.id].startDate).valueOf()
+            //       : moment(appointment.startDate).valueOf(),
+            //     endTime: changed[appointment.id].endDate
+            //       ? moment(changed[appointment.id].endDate).valueOf()
+            //       : moment(appointment.endDate).valueOf(),
+            //     moreInformation: changed[appointment.id].notes
+            //       ? changed[appointment.id].notes
+            //       : appointment.notes,
+            //     roomId: changed[appointment.id].roomId
+            //       ? `ROOM${changed[appointment.id].roomId}`
+            //       : `ROOM${appointment.roomId}`,
+            //     members: changed[appointment.id].members
+            //       ? changed[appointment.id].members
+            //       : appointment.members,
+            //   },
 
-              params: {
-                token: token,
-              },
-            })
+            //   params: {
+            //     token: token,
+            //   },
+            // })
             return { ...appointment, ...changed[appointment.id] };
           } else {
             return appointment;
@@ -187,15 +191,16 @@ const Reservation = ({
       );
     }
     if (deleted !== undefined) {
-      
-      axios({
-        method: "DELETE",
-        url: ` https://ntust.yhchen.space/api/meeting/${deleted}`,
+      //需要後端
+      // axios({
+      //   method: "DELETE",
+      //   url: ` https://ntust.yhchen.space/api/meeting/${deleted}`,
 
-        params: {
-          token: token,
-        },
-      });
+      //   params: {
+      //     token: token,
+      //   },
+      // });
+      console.log(deleted)
       setData(data.filter((appointment) => appointment.id !== deleted));
     }
   }
